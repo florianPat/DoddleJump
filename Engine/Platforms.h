@@ -12,13 +12,12 @@ class Platforms
 {
 	std::mt19937 range;
 	std::uniform_real_distribution<float> distX;
+	std::uniform_real_distribution<float> distY;
 	static constexpr float width = 96.0f, height = 16.0f;
 	Graphics& graphics;
 	std::vector<RectF> boundingBoxes;
-	FrameTimer frameTimer;
 	static constexpr float spawnDuration = 1.0f;
 	float duration = 0.0f;
-	bool isInitialized = false;
 	int size = 1;
 	static constexpr int maxSize = 8;
 public:
@@ -26,5 +25,4 @@ public:
 	void update(float dt);
 	void draw();
 	std::vector<RectF>& getBoundingBoxes();
-	bool& getIsInitialized();
 };

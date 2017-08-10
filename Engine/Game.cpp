@@ -45,12 +45,9 @@ void Game::UpdateModel()
 	{
 		float dt = frameTimer.Mark();
 
-		if (platforms.getIsInitialized())
-		{
-			doodle.update(dt, &gameOver, &platformsShouldMove);
-		}
+		doodle.update(dt, &gameOver, &platformsShouldMove);
 
-		if(platformsShouldMove || !platforms.getIsInitialized())
+		if(platformsShouldMove)
 			platforms.update(dt);
 	}
 }
@@ -58,9 +55,7 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	platforms.draw();
+
 	if (!gameOver)
-	{
-		if (platforms.getIsInitialized())
-			doodle.draw();
-	}
+		doodle.draw();
 }
