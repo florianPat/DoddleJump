@@ -23,6 +23,9 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Doddle.h"
+#include "Platforms.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -42,5 +45,10 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	FrameTimer frameTimer;
+	Platforms platforms;
+	Doodle doodle;
+	bool gameOver = false;
+	bool platformsShouldMove = false;
 	/********************************/
 };

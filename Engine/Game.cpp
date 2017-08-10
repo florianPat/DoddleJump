@@ -24,7 +24,10 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	platforms(gfx),
+	doodle(gfx, wnd.kbd, platforms, Vec2{ 0.0f, 0.0f }),
+	frameTimer()
 {
 }
 
@@ -38,8 +41,26 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (!gameOver)
+	{
+		float dt = frameTimer.Mark();
+
+		if (platforms.getIsInitialized())
+		{
+			doodle.update(dt, &gameOver, &platformsShouldMove);
+		}
+
+		if(platformsShouldMove || !platforms.getIsInitialized())
+			platforms.update(dt);
+	}
 }
 
 void Game::ComposeFrame()
 {
+	platforms.draw();
+	if (!gameOver)
+	{
+		if (platforms.getIsInitialized())
+			doodle.draw();
+	}
 }
