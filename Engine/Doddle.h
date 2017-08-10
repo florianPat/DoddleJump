@@ -12,8 +12,9 @@ class Doodle
 	Graphics& graphics;
 	Keyboard& keyboard;
 	Platforms& platforms;
-	Vec2 pos;
+	Vec2 oldPos;
 	RectF boundingBox;
+	RectF shoes;
 	static constexpr float speed = 100.0f;
 	static constexpr float width = 32.0f, height = 64.0f;
 	static constexpr float jumpDuration = 4.0f;

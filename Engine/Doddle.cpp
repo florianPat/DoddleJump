@@ -1,8 +1,9 @@
 #include "Doddle.h"
 #include "Colors.h"
 
-Doodle::Doodle(Graphics& graphics, Keyboard& keyboard, Platforms& platforms, Vec2& startingPos) : graphics(graphics), keyboard(keyboard), pos(startingPos),
-																			boundingBox(pos, width, height), platforms(platforms)
+Doodle::Doodle(Graphics& graphics, Keyboard& keyboard, Platforms& platforms, Vec2& startingPos) : graphics(graphics), keyboard(keyboard),
+																			boundingBox(startingPos, width, height), platforms(platforms), oldPos(),
+																			shoes(Vec2{ startingPos.x, startingPos.y + height - 0.5f }, Vec2{ width, height })
 {
 }
 
@@ -22,8 +23,9 @@ void Doodle::update(float dt, bool* gameOver, bool* platformsShouldMove)
 	auto platformBoxes = platforms.getBoundingBoxes();
 	for (auto it : platformBoxes)
 	{
-		//TODO: Update this that you have to be ON the platform!!
-		if (boundingBox.IsOverlappingWith(it))
+		if (!isJumping && 
+			((((oldPos.x > it.left && oldPos.x < it.right) || (oldPos.x + width > it.left && oldPos.x + width < it.right)) && oldPos.y < it.top) 
+				&& (((shoes.left > it.left && shoes.left < it.right) || (shoes.right > it.left && shoes.right < it.right)) && shoes.top > it.top)))
 			isJumping = true;
 
 		if (isJumping)
@@ -48,6 +50,8 @@ void Doodle::update(float dt, bool* gameOver, bool* platformsShouldMove)
 
 	Vec2 newPos(boundingBox.left + vel.x, boundingBox.top + vel.y);
 	boundingBox.setPos(newPos);
+	oldPos = Vec2(shoes.left, shoes.top);
+	shoes.setPos(Vec2{ newPos.x, newPos.y + height - 0.5f });
 
 	if (boundingBox.left < 0.0f)
 	{
